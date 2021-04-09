@@ -1,0 +1,36 @@
+import { connect } from 'react-redux';
+import OHIF from '@ohif/core';
+import ViewerRetrieveStudyData from './ViewerRetrieveStudyData.js';
+
+const { clearViewportSpecificData, setStudyData } = OHIF.redux.actions;
+const isActive = a => a.active === true;
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		server: {
+			name: 'DCM4CHEE',
+			wadoUriRoot: 'https://34.121.99.7:8443/dcm4chee-arc/aets/DCM4CHEE/wado',
+			qidoRoot: 'https://34.121.99.7:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
+			wadoRoot: 'https://34.121.99.7:8443/dcm4chee-arc/aets/DCM4CHEE/rs',
+			qidoSupportsIncludeField: true,
+			imageRendering: 'wadors',
+			thumbnailRendering: 'wadors',
+			enableStudyLazyLoad: true,
+			supportsFuzzyMatching: true,
+		}
+	};
+};
+const mapDispatchToProps = dispatch => {
+	return {
+		setStudyData: (StudyInstanceUID, data) => {
+			dispatch(setStudyData(StudyInstanceUID, data));
+		},
+		clearViewportSpecificData: () => {
+			dispatch(clearViewportSpecificData());
+		}
+	};
+};
+
+const ConnectedViewerRetrieveStudyData = connect(mapStateToProps, mapDispatchToProps)(ViewerRetrieveStudyData);
+
+export default ConnectedViewerRetrieveStudyData;
